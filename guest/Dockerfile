@@ -110,7 +110,6 @@ RUN /pkg-install.sh NET apt-get install -y --no-install-recommends \
 		mosh \
 		nano \
 		netcat-traditional \
-		ntpdate \
 		rpcbind \
 		sockstat \
 		sudo \
