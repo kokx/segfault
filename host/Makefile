@@ -7,7 +7,7 @@ all: albuild fs-root/bin/docker-exec-sigproxy fs-root/bin/unix-socket-client fs-
 albuild:
 	bash -c "docker run --rm sf-alpine-gcc true || \
 		docker commit sf-alpine-gcc sf-alpine-gcc || { \
-		docker run --network host --name sf-alpine-gcc alpine sh -c 'apk update && apk add gcc patch libc-dev musl-dev zlib-dev openssl-dev make linux-headers libcap-dev bash' \
+		docker run --network host --name sf-alpine-gcc alpine:3.20 sh -c 'apk update && apk add gcc patch libc-dev musl-dev zlib-dev openssl-dev make linux-headers libcap-dev bash' \
 		&& docker commit sf-alpine-gcc sf-alpine-gcc; }"
 
 # See mk_sshd.sh for manual debugging
