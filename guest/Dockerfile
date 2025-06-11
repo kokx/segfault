@@ -759,7 +759,8 @@ RUN /pkg-install.sh    HACK ghbin wader/fq '_linux_%arch1%'                     
 	&& /pkg-install.sh HACK bin https://raw.githubusercontent.com/nitefood/asn/master/asn                         asn2 \
 	&& /pkg-install.sh HACK bin https://raw.githubusercontent.com/trustedsec/hardcidr/master/hardCIDR.sh          hardcidr \
 	&& /pkg-install.sh HACK ghbin hahwul/dalfox  '_linux_%arch1%'                                                 dalfox
-RUN /pkg-install.sh NET ghbin hackerschoice/gsocket '_%arch%.deb' \
+RUN /pkg-install.sh NET apt-get install -y --no-install-recommends xz-utils \
+        && /pkg-install.sh NET ghbin hackerschoice/gsocket             '_%arch%.deb' \
 	&& /pkg-install.sh NET ghbin ginuerzh/gost                     'linux[_-]%arch:x86_64=amd64:aarch64=armv8%.*gz$' gost                          \
 	&& /pkg-install.sh NET ghbin tulir/gomuks                      'linux-%arch1%'                                gomuks                        \
 	&& /pkg-install.sh NET ghbin Snawoot/hola-proxy                'linux-%arch1%'                                hola-proxy                    \
