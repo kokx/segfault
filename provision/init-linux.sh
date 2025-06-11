@@ -82,7 +82,7 @@ init_host_sshd()
   [[ "${port}" -eq 22 ]] && grep "Port 22" /etc/ssh/sshd_config >/dev/null && {
     sed -i -E "s/#Port ${port}/Port ${SF_SSH_PORT_MASTER}/g" /etc/ssh/sshd_config
     DEBUGF "Restarting SSHD on port ${SF_SSH_PORT_MASTER}"
-    service sshd restart
+    systemctl restart ssh
     IS_SSH_GOT_MOVED=1
   }
 }
