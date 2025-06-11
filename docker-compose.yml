@@ -2,7 +2,7 @@ version: "2.4"
 services:
 
   sf-redis:
-    image: redis
+    image: redis:7
     container_name: sf-redis
     read_only: true
     hostname: sf-redis
