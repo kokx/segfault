@@ -216,7 +216,7 @@ RUN /pkg-install.sh LARGE apt-get install -y --no-install-recommends \
 		mycli \
 		mypager \
 		nfs-common \
-		neofetch \
+		neowofetch \
 		neovim \
 		nginx \
 		ngrep \
