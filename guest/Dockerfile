@@ -632,8 +632,7 @@ RUN pkg-install.sh HUGE apt-get install -y --no-install-recommends \
 		gobjc++-mingw-w64-i686-posix gobjc++-mingw-w64-i686-win32 gobjc-mingw-w64-i686-posix gobjc-mingw-w64-i686-win32 \
 		maven \
 		rust-src
-RUN pkg-install.sh HACK ghbin shadow1ng/fscan 'linux_%arch:x86_64=x64:aarch64=arm64%$' fscan \
-	&& pkg-install.sh HACK ghbin 'theaog/spirit' 'spirit%arch:x86_64=:DEFAULT=SKIP%.tgz$' spirit   `# x86_64 only, spirit-arm bad` \
+RUN pkg-install.sh HACK ghbin 'theaog/spirit' 'spirit%arch:x86_64=:DEFAULT=SKIP%.tgz$' spirit   `# x86_64 only, spirit-arm bad` \
 	&& pkg-install.sh HACK bash -c '{ GOBIN=/usr/bin go install github.com/tomnomnom/gf@latest \
 		&& mkdir -p /usr/share/gf \
 		&& git clone --depth 1 https://github.com/tomnomnom/gf.git /tmp/gf \
