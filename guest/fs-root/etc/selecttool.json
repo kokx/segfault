@@ -1,0 +1,42 @@
+{
+  "cache-path": "~/.cache/secura/selecttool",
+  "base-path": "/opt/bvcyber/report-texts",
+  "default-group": "English",
+  "groups": [
+    {
+      "id": "English",
+      "name": "English findings",
+      "path": "findings/en_GB"
+    },
+    {
+      "id": "Dutch",
+      "name": "Dutch findings",
+      "path": "findings/nl_NL"
+    },
+    {
+      "id": "English-snip",
+      "name": "English snippets",
+      "path": "snippets/en_GB"
+    },
+    {
+      "id": "Dutch-snip",
+      "name": "Dutch snippets",
+      "path": "snippets/nl_NL"
+    },
+    {
+      "id": "Tutorial",
+      "name": "Tutorials",
+      "path": "tutorials/en_GB"
+    },
+    {
+      "id": "English-demo",
+      "name": "English demo report",
+      "path": "demo/en"
+    },
+    {
+      "id": "Dutch-demo",
+      "name": "Dutch demo report",
+      "path": "demo/nl"
+    }
+  ]
+}

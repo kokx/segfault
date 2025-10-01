@@ -878,15 +878,37 @@ RUN pkg-install.sh BVCYBER apt-get install -y --no-install-recommends \
 		rubygems \
 		gawk \
 		libwww-perl \
-		python2-minimal
+		python2-minimal \
+        python3-whoosh \
+		python3-pyqt5 \
+		libxml2-dev \
+		libxslt-dev \
+		libpq-dev \
+		python3-dev \
+		build-essential
+
+ENV SELECTTOOL_CONFIG=/etc/selecttool.json
+
+RUN pkg-install.sh BVCYBER pipx install uv
 
 RUN pkg-install.sh BVCYBER bash -c "{ mkdir -p /opt/bvcyber \
 		&& cd /opt/bvcyber \
-		&& git clone 'https://oauth2:${GITLAB_TOKEN}@gitlab.secura.com/tools/core.git'; }"
+		&& git clone 'https://oauth2:${GITLAB_TOKEN}@gitlab.secura.com/tools/core.git' \
+		&& ln -s /opt/bvcyber/core/selecttool2/bin/selecttool /usr/local/bin/selecttool \
+		&& ln -s /opt/bvcyber/core/selecttool2/bin/selecttool /usr/local/bin/selecttool-stdout  \
+		&& ln -s /opt/bvcyber/core/selecttool2/bin/selecttool /usr/local/bin/selecttool2 \
+		&& cd /opt/bvcyber/core/domainscanner \
+		&& uv venv \
+		&& uv pip install -r requirements.txt \
+		&& echo '#!/usr/bin/env bash' >> /usr/local/bin/domainscanner \
+		&& echo '. /opt/bvcyber/core/domainscanner/.venv/bin/activate' >> /usr/local/bin/domainscanner \
+		&& echo 'python -W ignore /opt/bvcyber/core/domainscanner/domainscanner.py \"\$@\"' >> /usr/local/bin/domainscanner \
+		&& chmod +x /usr/local/bin/domainscanner; }"
 
 RUN pkg-install.sh BVCYBER bash -c "{ mkdir -p /opt/bvcyber \
 		&& cd /opt/bvcyber \
 		&& git clone 'https://oauth2:${GITLAB_TOKEN}@gitlab.secura.com/template/report-template.git' \
+		&& git clone 'https://oauth2:${GITLAB_TOKEN}@gitlab.secura.com/template/report-texts.git' \
 		&& ln -s /opt/bvcyber/report-template/Generators/ch-42-tls/runit.sh /usr/local/bin/ch-42-tls \
 		&& ln -s /opt/bvcyber/report-template/Generators/ch-30-dns/runit.sh /usr/local/bin/ch-30-dns; }"
 
