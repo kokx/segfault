@@ -15,6 +15,7 @@ WORKDIR /root/
 # Default is "MINI BASE NET" (see pkg-install.sh)
 ARG SF_PACKAGES
 ARG GITHUB_TOKEN
+ARG GITLAB_TOKEN
 ARG BESTEFFORT
 
 COPY fs-root/sf/bin/pkg-install.sh /sf/bin/
@@ -871,6 +872,23 @@ RUN sed 's/deb-src.*//' -i /etc/apt/sources.list \
 	&& apt-get update
 RUN pkg-install.sh HACK bash -c '{ curl -fL https://github.com/pixelb/scripts/raw/refs/heads/master/scripts/ansi2html.sh | sed "/^pre { white-.*/d" >/usr/bin/ansi2html \
 		&& chmod 755 /usr/bin/ansi2html; }'
+
+RUN pkg-install.sh BVCYBER apt-get install -y --no-install-recommends \
+		ruby \
+		rubygems \
+		gawk \
+		libwww-perl \
+		python2-minimal
+
+RUN pkg-install.sh BVCYBER bash -c "{ mkdir -p /opt/bvcyber \
+		&& cd /opt/bvcyber \
+		&& git clone 'https://oauth2:${GITLAB_TOKEN}@gitlab.secura.com/tools/core.git'; }"
+
+RUN pkg-install.sh BVCYBER bash -c "{ mkdir -p /opt/bvcyber \
+		&& cd /opt/bvcyber \
+		&& git clone 'https://oauth2:${GITLAB_TOKEN}@gitlab.secura.com/template/report-template.git' \
+		&& ln -s /opt/bvcyber/report-template/Generators/ch-42-tls/runit.sh /usr/local/bin/ch-42-tls \
+		&& ln -s /opt/bvcyber/report-template/Generators/ch-30-dns/runit.sh /usr/local/bin/ch-30-dns; }"
 
 # Keep the apt/lists in case user does an apt update -y
 #RUN rm -rf /var/lib/apt/lists/*
