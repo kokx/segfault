@@ -910,7 +910,7 @@ RUN pkg-install.sh BVCYBER bash -c "{ mkdir -p /opt/bvcyber \
 		&& git clone 'https://oauth2:${GITLAB_TOKEN}@gitlab.secura.com/template/report-template.git' \
 		&& git clone 'https://oauth2:${GITLAB_TOKEN}@gitlab.secura.com/template/report-texts.git' \
 		&& ln -s /opt/bvcyber/report-template/Generators/ch-42-tls/runit.sh /usr/local/bin/ch-42-tls \
-		&& ln -s /opt/bvcyber/report-template/Generators/ch-30-dns/runit.sh /usr/local/bin/ch-30-dns; }"
+		&& ln -s /usr/local/bin/domainscanner /usr/local/bin/ch-30-dns; }"
 
 # Keep the apt/lists in case user does an apt update -y
 #RUN rm -rf /var/lib/apt/lists/*
