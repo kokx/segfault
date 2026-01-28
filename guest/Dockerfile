@@ -564,7 +564,7 @@ RUN pkg-install.sh    HACK pipx install aort \
 	&& pkg-install.sh HACK pipx install holehe \
 	&& pkg-install.sh HACK pipx install jishaku \
 	&& pkg-install.sh HACK pipx install git+https://github.com/codingo/Interlace \
-	&& pkg-install.sh HACK pipx install git+https://github.com/soxoj/maigret `### 2023-03-07 pipx repo fails on aiohttp/longintrepr.h` \
+	&& `### pkg-install.sh HACK pipx install git+https://github.com/soxoj/maigret` `### 2023-03-07 pipx repo fails on aiohttp/longintrepr.h` \
 	&& pkg-install.sh HACK pipx install raccoon-scanner \
 	&& pkg-install.sh HACK pipx install git+https://github.com/EntySec/Shreder \
 	&& pkg-install.sh HACK pipx install trevorspray \
