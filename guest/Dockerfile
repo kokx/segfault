@@ -416,14 +416,14 @@ RUN pkg-install.sh GUI apt-get install -y --no-install-recommends \
 		code || { [ $(uname -m) != x86_64 ] && true; }
 RUN pkg-install.sh GUI apt-get install -y --no-install-recommends \
 		`### xpra ### Using Xpra repo instead` \
-		libavformat61 \
+		`### libavformat61 yanked from kali2026.1` \
 		libavif16 \
 		libjs-jquery-ui \
 		`###libprocps8 ### yanked from Kali` \
 		libqrencode4 \
 		libxres1 \
 		libxtst6 \
-		libswscale8 \
+		`### libswscale8 yanked from kali2026.1` \
 		libturbojpeg0 \
 		gir1.2-gtk-3.0 \
 		python3-cairo \
