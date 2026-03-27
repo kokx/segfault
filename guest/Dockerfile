@@ -198,7 +198,7 @@ RUN pkg-install.sh LARGE apt-get install -y --no-install-recommends \
 		fastfetch \
 		fd-find \
 		flatpak \
-		fossil \
+		`### fossil yanked from kali2026.1` \
 		fzf \
 		hashcat \
 		highlight \
@@ -270,7 +270,7 @@ RUN pkg-install.sh LARGE apt-get install -y --no-install-recommends \
 		radare2 \
 		recon-ng \
 		redis-tools \
-		rclone \
+		`### rclone yanked from kali2026.1` \
 		rlwrap \
 		smbclient \
 		smbmap \
