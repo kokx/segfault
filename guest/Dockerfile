@@ -682,7 +682,7 @@ RUN pkg-install.sh HACK ghbin 'theaog/spirit' 'spirit%arch:x86_64=:DEFAULT=SKIP%
 	&& pkg-install.sh HACK bash -c '{ curl -sf https://gobinaries.com/gwen001/gitlab-subdomains | PREFIX=/usr/bin sh; }' \
 	&& pkg-install.sh HACK bash -c '{ curl -sf https://gobinaries.com/gwen001/github-endpoints | PREFIX=/usr/bin sh; }'
 RUN pkg-install.sh GUI apt-get install -y --no-install-recommends \
-		hexchat \
+		`### hexchat yanked from kali2026.1` \
 		i3 \
 		jupyter \
 		pavucontrol \
