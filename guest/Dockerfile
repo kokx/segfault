@@ -828,7 +828,7 @@ RUN    pkg-install.sh HACK ghbin ekzhang/bore  '%arch:aarch64=arm%-unknown-linux
 	&& pkg-install.sh HACK bin 'https://github.com/xaitax/SploitScan/raw/main/sploitscan.py'                    sploitscan \
 	&& pkg-install.sh HACK ghbin hueristiq/xurlfind3r               'linux_%arch:x86_64=amd64:aarch64=arm64%'   xurlfind3r
 RUN    pkg-install.sh LARGE ghbin  PaddiM8/kalker                       'linux'                                 kalker \
-	&& pkg-install.sh LAREGE ghbin bvaisvil/zenith                      'x86_64-unknown-linux-musl.tgz'         zenith
+	&& pkg-install.sh LAREGE ghbin bvaisvil/zenith                      'zenith-Linux-musl-x86_64.tar.gz'       zenith
  ## YANKED. Already in apt-get install powershell/pkg-install.sh LARGE ghbin PowerShell/PowerShell  'deb_%arch1%.deb'
 RUN pkg-install.sh LARGE bash -c '{ curl -fsSL https://bun.sh/install | BUN_INSTALL=/usr bash; }'
 RUN	pkg-install.sh HACK bash -c '{ wget -O "/usr/bin/favfreak.py" https://raw.githubusercontent.com/devanshbatham/FavFreak/master/favfreak.py \
