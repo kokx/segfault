@@ -779,8 +779,9 @@ RUN pkg-install.sh    HACK ghbin wader/fq '_linux_%arch1%'                      
 	&& pkg-install.sh HACK bin https://raw.githubusercontent.com/nitefood/asn/master/asn                         asn2 \
 	&& pkg-install.sh HACK bin https://raw.githubusercontent.com/trustedsec/hardcidr/master/hardCIDR.sh          hardcidr
 RUN pkg-install.sh HACK ghbin ginuerzh/gost                     'linux[_-]%arch:x86_64=amd64:aarch64=arm64%.*gz$' gost                          \
-	&& pkg-install.sh HACK ghbin tulir/gomuks                      'linux-%arch1%'                                gomuks                        \
-	&& pkg-install.sh HACK ghbin Snawoot/hola-proxy                'linux-%arch1%'                                hola-proxy                    \
+	&& pkg-install.sh HACK ghbin gomuks/gomuks                      'gomuks-%arch1%'                                gomuks                        \
+	# Repository removed
+	#&& pkg-install.sh HACK ghbin Snawoot/hola-proxy                'linux-%arch1%'                                hola-proxy                    \
 	&& pkg-install.sh HACK ghbin maxmind/mmdbinspect               'linux_amd64.tar.gz$'                          mmdbinspect   `# x86_64 only` \
 	&& pkg-install.sh HACK ghbin shadowsocks/shadowsocks-rust      '%arch%-unknown-linux-musl.tar'                                              \
 	&& pkg-install.sh HACK ghbin shadowsocks/v2ray-plugin          'linux-%arch1%'                               'v2ray-plugin_*' "" v2ray-plugin \
