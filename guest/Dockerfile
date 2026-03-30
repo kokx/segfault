@@ -735,7 +735,7 @@ RUN pkg-install.sh DEV apt-get install -y --no-install-recommends \
 RUN pkg-install.sh LARGE apt-get install -y --no-install-recommends \
 		aria2 \
 		buildtorrent \
-		caddy \
+		`### caddy yanked from kali2026.1` \
 		ccache \
 		expat \
 		evilginx2 \
