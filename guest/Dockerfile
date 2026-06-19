@@ -275,7 +275,7 @@ RUN pkg-install.sh LARGE apt-get install -y --no-install-recommends \
 		smbclient \
 		smbmap \
 		snmp \
-		speedtest-cli \
+		`### speedtest-cli yanked from kali (2026-05-14)` \
 		sqsh \
 		sslscan \
 		sshpass \
