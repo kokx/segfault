@@ -400,6 +400,7 @@ services:
       - NET_ADMIN
     environment:
       - SF_DEBUG
+      - SF_IPV6
       - NET_LG_ROUTER_IP=${SF_NET_LG_ROUTER_IP:?}
       - NET_DIRECT_WG_IP=${SF_NET_DIRECT_WG_IP:?}
       - NET_DIRECT_ROUTER_IP=${SF_NET_DIRECT_ROUTER_IP:?}
@@ -445,7 +446,7 @@ services:
       - SF_REDIS_AUTH=${SF_REDIS_AUTH}
       - SF_RPC_IP=${SF_RPC_IP}
       - SF_NET_LG_ROUTER_IP=${SF_NET_LG_ROUTER_IP:?}
-      - SF_IPV6=${SF_IPV6}
+      - SF_IPV6
       - SF_SEED=${SF_SEED}
       - SF_HM_SIZE_LG=8
       - SF_DIRECT
