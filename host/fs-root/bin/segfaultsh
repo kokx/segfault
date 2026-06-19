@@ -1508,7 +1508,12 @@ exec_devnull docker run \
 	-d \
 	"sf-guest${SF_GUEST_CONTAINER_NAME_SUFFIX}" bash -c "exec -a '[init-${LID}-${SF_HOSTNAME}]' sleep infinity" || ERREXIT 251 "Failed-#1 to set up guest container..."
 # Note: Run 'init/sleep' as user 1000:1000 so that sf-host's SSHD can move itself into this guest's
-# network namespace. 
+# network namespace.
+
+# Attach IPv6 network if an IPv6 network range has been assigned
+[[ ! -z $SF_IPV6 ]] && {
+	exec_devnull docker network connect sf-ipv6 "lg-${LID}" || WARN "Failed to attach IPv6 network to guest container"
+}
 
 echo_pty -n ".."
 DEBUGF "Container started..."

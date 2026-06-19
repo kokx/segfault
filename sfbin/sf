@@ -205,6 +205,7 @@ chmod 644 "${SF_BASEDIR}/config/etc/relay-exit-nodes-global.txt" 2>/dev/null
 	[[ -z $SF_IP ]] && ERREXIT 255 "Could not get SF_IP..."
 	WARN "SF_IP not set in .env. Using '$SF_IP'."
 }
+[[ -z $SF_IPV6 ]] && WARN "SF_IPV6 not set in .env. IPv6 capabilities will be disabled!"
 
 # xfs_init_quota "${SF_DATADIR}/everyone-root" "everyone" 100 16384 16G
 
@@ -356,6 +357,10 @@ chmod 700 "${SF_SHMDIR}/run/redis"
 chown 999 "${SF_SHMDIR}/run/redis/sock" # docker/redis user
 chmod 711 "${SF_SHMDIR}/run/redis/sock"
 # exec docker-compose "$@"
+[[ ! -z $SF_IPV6 ]] && {
+	docker network create --ipv6 --ipv4=false --driver=bridge --subnet "${SF_IPV6}" sf-ipv6 \
+		|| ERREXIT 255 "Failed to create IPv6 network"
+}
 docker-compose "$@"
 ret=$?
 # If not started as background (-d): run DOWN.
