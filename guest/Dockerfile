@@ -21,7 +21,7 @@ ARG BESTEFFORT
 COPY fs-root/sf/bin/pkg-install.sh /sf/bin/
 ENV PATH="/sf/bin:${PATH}"
 
-RUN	sed 's/^deb \(.*\)/deb \1\ndeb-src \1/g' -i /etc/apt/sources.list \
+RUN	sed 's/^Types: deb/Types: deb deb-src/g' -i /etc/apt/sources.list.d/kali.sources \
 	&& apt-get update -y \
 	&& apt-get install -y --no-install-recommends ca-certificates
 RUN pkg-install.sh MINI apt-get install -y --no-install-recommends \
