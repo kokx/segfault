@@ -1508,7 +1508,12 @@ exec_devnull docker run \
 	-d \
 	"sf-guest${SF_GUEST_CONTAINER_NAME_SUFFIX}" bash -c "exec -a '[init-${LID}-${SF_HOSTNAME}]' sleep infinity" || ERREXIT 251 "Failed-#1 to set up guest container..."
 # Note: Run 'init/sleep' as user 1000:1000 so that sf-host's SSHD can move itself into this guest's
-# network namespace. 
+# network namespace.
+
+# Attach IPv6 network if an IPv6 network range has been assigned
+[[ ! -z $SF_IPV6 ]] && {
+	exec_devnull docker network connect sf-ipv6 "lg-${LID}" || WARN "Failed to attach IPv6 network to guest container"
+}
 
 echo_pty -n ".."
 DEBUGF "Container started..."
@@ -1534,6 +1539,7 @@ LG_PID=${arr[1]}
 C_IP=${arr[2]}
 LG_MAC=${arr[3]}
 [[ -z $C_IP ]] && ERREXIT 249 "[${LID}] ${SF_FQ_HOSTNAME} Could not get container's IP address."
+[[ -n $SF_IPV6 ]] && C_IPV6=$(docker inspect -f '{{ (index .NetworkSettings.Networks "sf-ipv6").GlobalIPv6Address }}' "lg-${LID}")
 
 IDX=$((0x${YOUR_IP_HASH} % 1024))
 [[ $IDX -lt 0 ]] && IDX=$((IDX * -1))
@@ -1565,6 +1571,7 @@ unset WGNAME_UP
 exec_devnull timeout 5 docker exec --user 0:0 --env SF_IS_NEW_SERVER="${SF_IS_NEW_SERVER}" --env WGNAME_UP="${WGNAME_UP}" "lg-${LID}" /sf/bin/sf-setup.sh || STOPEXIT "${LID}" 247 "[${LID}] ${SF_FQ_HOSTNAME} Failed-#2 to set up guest container..."
 touch "/config/self-for-guest/lg-${LID}/THIS-DIRECTORY-IS-IN-MEMORY-ONLY"
 tofile "${C_IP:?}" "/config/self-for-guest/lg-${LID}/c_ip"
+tofile "${C_IPV6}" "/config/self-for-guest/lg-${LID}/c_ipv6"
 
 echo_pty -e "....[${CG}OK${CN}]"
 

@@ -88,6 +88,13 @@ fw2docker "udp" "25002:26023" "${NET_DIRECT_ROUTER_IP:?}"
 
 # [[ -n $SF_DEBUG ]] && sysctl -w "net.ipv4.conf.${dev_br}.route_localnet=1"
 
+# Enable IPv6 forwarding towards LGs
+[[ ! -z $SF_IPV6 ]] && {
+	sysctl -w "net.ipv6.conf.all.forwarding=1"
+	ip6tables -I FORWARD -d "${SF_IPV6}" -j ACCEPT
+	ip6tables -I FORWARD -s "${SF_IPV6}" -j ACCEPT
+}
+
 # Keep this running so we can inspect iptables rules (for debugging only)
 [[ -n $SF_DEBUG ]] && exec -a '[network-fix] sleep' sleep infinity
 exit 0
