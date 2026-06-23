@@ -731,7 +731,7 @@ RUN pkg-install.sh DEV apt-get install -y --no-install-recommends \
 		libjson-c-dev \
 		libunistring-dev \
 		ninja-build \
-		repo
+		`### repo yanked from kali2026.1`
 # Android build tools:
 RUN pkg-install.sh LARGE apt-get install -y --no-install-recommends \
 		aria2 \
