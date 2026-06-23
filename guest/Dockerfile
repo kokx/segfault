@@ -469,8 +469,9 @@ RUN pkg-install.sh GUI apt-get install -y --no-install-recommends \
 RUN pkg-install.sh GUI bash -c '{ [[ $HOSTTYPE != x86_64 ]] && exit 0; cd /usr/lib \
 		&& curl -sf https://download-installer.cdn.mozilla.net/pub/firefox/releases/108.0.1/linux-x86_64/en-US/firefox-108.0.1.tar.bz2 | tar xfvj - \
 		&& ln -s /usr/lib/firefox/firefox /usr/bin/firefox; }'
+### 2026-06: Modified to prevent /etc/apt/sources.list.d/kali.sources from being removed
 RUN pkg-install.sh GUI bash -c '{ true; \
-		rm -f /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources; \
+		ls /etc/apt/sources.list.d/*.{sources,list} | grep -v kali.sources | xargs rm -f; \
 		apt-get update ; }'
 RUN pkg-install.sh    HUGE ghbin SagerNet/sing-box 'linux-%arch:x86_64=amd64:aarch64=arm64%.'   sing-box \
 	&& pkg-install.sh HACK bin 'https://api.localxpose.io/api/v2/downloads/loclx-linux-%arch1%.zip' loclx \
