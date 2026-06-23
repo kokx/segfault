@@ -872,7 +872,7 @@ RUN pkg-install.sh HACK bash -c '{ cd /tmp \
 RUN pkg-install.sh HACK bin 'https://github.com/milio48/serveo/raw/refs/heads/master/serveo.sh' serveo \
 	&& pkg-install.sh HACK bin 'https://github.com/nitefood/asn/raw/refs/heads/master/asn' asn \
 	&& pkg-install.sh HACK bin 'https://download.mikrotik.com/routeros/winbox/4.0beta21/WinBox_Linux.zip' WinBox '' winbox
-RUN sed 's/deb-src.*//' -i /etc/apt/sources.list \
+RUN sed 's/deb-src//' -i /etc/apt/sources.list.d/kali.sources \
 	&& apt-get autoremove -y \
 	&& apt-get update
 RUN pkg-install.sh HACK bash -c '{ curl -fL https://github.com/pixelb/scripts/raw/refs/heads/master/scripts/ansi2html.sh | sed "/^pre { white-.*/d" >/usr/bin/ansi2html \
