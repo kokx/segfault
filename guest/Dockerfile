@@ -21,7 +21,7 @@ ARG BESTEFFORT
 COPY fs-root/sf/bin/pkg-install.sh /sf/bin/
 ENV PATH="/sf/bin:${PATH}"
 
-RUN	sed 's/^deb \(.*\)/deb \1\ndeb-src \1/g' -i /etc/apt/sources.list \
+RUN	sed 's/^Types: deb/Types: deb deb-src/g' -i /etc/apt/sources.list.d/kali.sources \
 	&& apt-get update -y \
 	&& apt-get install -y --no-install-recommends ca-certificates
 RUN pkg-install.sh MINI apt-get install -y --no-install-recommends \
@@ -198,7 +198,7 @@ RUN pkg-install.sh LARGE apt-get install -y --no-install-recommends \
 		fastfetch \
 		fd-find \
 		flatpak \
-		fossil \
+		`### fossil yanked from kali2026.1` \
 		fzf \
 		hashcat \
 		highlight \
@@ -270,12 +270,12 @@ RUN pkg-install.sh LARGE apt-get install -y --no-install-recommends \
 		radare2 \
 		recon-ng \
 		redis-tools \
-		rclone \
+		`### rclone yanked from kali2026.1` \
 		rlwrap \
 		smbclient \
 		smbmap \
 		snmp \
-		speedtest-cli \
+		`### speedtest-cli yanked from kali (2026-05-14)` \
 		sqsh \
 		sslscan \
 		sshpass \
@@ -416,14 +416,14 @@ RUN pkg-install.sh GUI apt-get install -y --no-install-recommends \
 		code || { [ $(uname -m) != x86_64 ] && true; }
 RUN pkg-install.sh GUI apt-get install -y --no-install-recommends \
 		`### xpra ### Using Xpra repo instead` \
-		libavformat61 \
+		`### libavformat61 yanked from kali2026.1` \
 		libavif16 \
 		libjs-jquery-ui \
 		`###libprocps8 ### yanked from Kali` \
 		libqrencode4 \
 		libxres1 \
 		libxtst6 \
-		libswscale8 \
+		`### libswscale8 yanked from kali2026.1` \
 		libturbojpeg0 \
 		gir1.2-gtk-3.0 \
 		python3-cairo \
@@ -469,8 +469,9 @@ RUN pkg-install.sh GUI apt-get install -y --no-install-recommends \
 RUN pkg-install.sh GUI bash -c '{ [[ $HOSTTYPE != x86_64 ]] && exit 0; cd /usr/lib \
 		&& curl -sf https://download-installer.cdn.mozilla.net/pub/firefox/releases/108.0.1/linux-x86_64/en-US/firefox-108.0.1.tar.bz2 | tar xfvj - \
 		&& ln -s /usr/lib/firefox/firefox /usr/bin/firefox; }'
+### 2026-06: Modified to prevent /etc/apt/sources.list.d/kali.sources from being removed
 RUN pkg-install.sh GUI bash -c '{ true; \
-		rm -f /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources; \
+		ls /etc/apt/sources.list.d/*.{sources,list} | grep -v kali.sources | xargs rm -f; \
 		apt-get update ; }'
 RUN pkg-install.sh    HUGE ghbin SagerNet/sing-box 'linux-%arch:x86_64=amd64:aarch64=arm64%.'   sing-box \
 	&& pkg-install.sh HACK bin 'https://api.localxpose.io/api/v2/downloads/loclx-linux-%arch1%.zip' loclx \
@@ -605,7 +606,10 @@ RUN pkg-install.sh    LARGE apt-get install -y --no-install-recommends \
 		python3-python-telegram-bot \
 		python3-wsgidav
 RUN pkg-install.sh LARGE bin 'https://gitlab.com/api/v4/projects/32089582/packages/generic/geonet-rs/0.4.4/geonet_0.4.4_%arch:x86_64=x86_64:DEFAULT=SKIP%.deb'    `# x86_64 only` \
-	&& pkg-install.sh MINI bash -c "{ [[ -f /usr/share/locale/locale.alias ]] && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8; }" \
+	# This command assumes the presence of the locale.alias file, which seems
+	# to have been removed in recent versions of the locales package
+	#&& pkg-install.sh MINI bash -c "{ [[ -f /usr/share/locale/locale.alias ]] && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8; }" \
+	&& pkg-install.sh MINI bash -c "{ echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen && dpkg-reconfigure --frontend=noninteractive locales && update-locale LANG=en_US.UTF-8; }" \
 	&& pkg-install.sh DEVEL bash -c '{ arch=amd64; [[ $HOSTTYPE == "aarch64" ]] && arch=arm64; apt-get install -y --no-install-recommends linux-headers-${arch}; }'
 ### After 0.4.3a release
 #RUN pkg-install.sh GAMES apt-get install -y --no-install-recommends \
@@ -670,7 +674,7 @@ RUN pkg-install.sh HACK ghbin 'theaog/spirit' 'spirit%arch:x86_64=:DEFAULT=SKIP%
 	&& pkg-install.sh HACK bin 'https://github.com/projectdiscovery/mapcidr/releases/download/v1.1.9/mapcidr_1.1.9_linux_%arch1%.zip' mapcidr   `# often missing binary assets.` \
 	&& pkg-install.sh HACK ghbin glebarez/cero               'linux-amd64'                                cero      `# x86_64 only` \
 	&& pkg-install.sh HACK ghbin dwisiswant0/crlfuzz         'inux_%arch:x86_64=amd64:aarch64=arm64%'     crlfuzz \
-	&& pkg-install.sh HACK ghbin hahwul/dalfox               'inux-%arch:x86_64=amd64:aarch64=arm64%'     'dalfox*' "" dalfox \
+	&& pkg-install.sh HACK ghbin hahwul/dalfox               'inux-%arch%.deb'                            'dalfox*' "" dalfox \
 	&& pkg-install.sh HACK ghbin pwnesia/dnstake             'linux_%arch:x86_64=amd64:aarch64=arm64%'    dnstake \
 	&& pkg-install.sh HACK ghbin KathanP19/Gxss              'inux_x86_64'                                Gxss      `# x86_64 only` \
 	&& pkg-install.sh HACK ghbin qsocket/qs-netcat           'linux_%arch:x86_64=amd64:aarch64=arm64%'    qs-netcat \
@@ -679,7 +683,7 @@ RUN pkg-install.sh HACK ghbin 'theaog/spirit' 'spirit%arch:x86_64=:DEFAULT=SKIP%
 	&& pkg-install.sh HACK bash -c '{ curl -sf https://gobinaries.com/gwen001/gitlab-subdomains | PREFIX=/usr/bin sh; }' \
 	&& pkg-install.sh HACK bash -c '{ curl -sf https://gobinaries.com/gwen001/github-endpoints | PREFIX=/usr/bin sh; }'
 RUN pkg-install.sh GUI apt-get install -y --no-install-recommends \
-		hexchat \
+		`### hexchat yanked from kali2026.1` \
 		i3 \
 		jupyter \
 		pavucontrol \
@@ -727,12 +731,12 @@ RUN pkg-install.sh DEV apt-get install -y --no-install-recommends \
 		libjson-c-dev \
 		libunistring-dev \
 		ninja-build \
-		repo
+		`### repo yanked from kali2026.1`
 # Android build tools:
 RUN pkg-install.sh LARGE apt-get install -y --no-install-recommends \
 		aria2 \
 		buildtorrent \
-		caddy \
+		`### caddy yanked from kali2026.1` \
 		ccache \
 		expat \
 		evilginx2 \
@@ -776,8 +780,9 @@ RUN pkg-install.sh    HACK ghbin wader/fq '_linux_%arch1%'                      
 	&& pkg-install.sh HACK bin https://raw.githubusercontent.com/nitefood/asn/master/asn                         asn2 \
 	&& pkg-install.sh HACK bin https://raw.githubusercontent.com/trustedsec/hardcidr/master/hardCIDR.sh          hardcidr
 RUN pkg-install.sh HACK ghbin ginuerzh/gost                     'linux[_-]%arch:x86_64=amd64:aarch64=arm64%.*gz$' gost                          \
-	&& pkg-install.sh HACK ghbin tulir/gomuks                      'linux-%arch1%'                                gomuks                        \
-	&& pkg-install.sh HACK ghbin Snawoot/hola-proxy                'linux-%arch1%'                                hola-proxy                    \
+	&& pkg-install.sh HACK ghbin gomuks/gomuks                      'gomuks-%arch1%'                                gomuks                        \
+	# Repository removed
+	#&& pkg-install.sh HACK ghbin Snawoot/hola-proxy                'linux-%arch1%'                                hola-proxy                    \
 	&& pkg-install.sh HACK ghbin maxmind/mmdbinspect               'linux_amd64.tar.gz$'                          mmdbinspect   `# x86_64 only` \
 	&& pkg-install.sh HACK ghbin shadowsocks/shadowsocks-rust      '%arch%-unknown-linux-musl.tar'                                              \
 	&& pkg-install.sh HACK ghbin shadowsocks/v2ray-plugin          'linux-%arch1%'                               'v2ray-plugin_*' "" v2ray-plugin \
@@ -824,7 +829,7 @@ RUN    pkg-install.sh HACK ghbin ekzhang/bore  '%arch:aarch64=arm%-unknown-linux
 	&& pkg-install.sh HACK bin 'https://github.com/xaitax/SploitScan/raw/main/sploitscan.py'                    sploitscan \
 	&& pkg-install.sh HACK ghbin hueristiq/xurlfind3r               'linux_%arch:x86_64=amd64:aarch64=arm64%'   xurlfind3r
 RUN    pkg-install.sh LARGE ghbin  PaddiM8/kalker                       'linux'                                 kalker \
-	&& pkg-install.sh LAREGE ghbin bvaisvil/zenith                      'x86_64-unknown-linux-musl.tgz'         zenith
+	&& pkg-install.sh LAREGE ghbin bvaisvil/zenith                      'zenith-Linux-musl-x86_64.tar.gz'       zenith
  ## YANKED. Already in apt-get install powershell/pkg-install.sh LARGE ghbin PowerShell/PowerShell  'deb_%arch1%.deb'
 RUN pkg-install.sh LARGE bash -c '{ curl -fsSL https://bun.sh/install | BUN_INSTALL=/usr bash; }'
 RUN	pkg-install.sh HACK bash -c '{ wget -O "/usr/bin/favfreak.py" https://raw.githubusercontent.com/devanshbatham/FavFreak/master/favfreak.py \
@@ -867,7 +872,7 @@ RUN pkg-install.sh HACK bash -c '{ cd /tmp \
 RUN pkg-install.sh HACK bin 'https://github.com/milio48/serveo/raw/refs/heads/master/serveo.sh' serveo \
 	&& pkg-install.sh HACK bin 'https://github.com/nitefood/asn/raw/refs/heads/master/asn' asn \
 	&& pkg-install.sh HACK bin 'https://download.mikrotik.com/routeros/winbox/4.0beta21/WinBox_Linux.zip' WinBox '' winbox
-RUN sed 's/deb-src.*//' -i /etc/apt/sources.list \
+RUN sed 's/deb-src//' -i /etc/apt/sources.list.d/kali.sources \
 	&& apt-get autoremove -y \
 	&& apt-get update
 RUN pkg-install.sh HACK bash -c '{ curl -fL https://github.com/pixelb/scripts/raw/refs/heads/master/scripts/ansi2html.sh | sed "/^pre { white-.*/d" >/usr/bin/ansi2html \
